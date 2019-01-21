@@ -1,0 +1,89 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+<br/><br/>
+<form method="POST" action="/get-containers/">
+{% csrf_token %}
+<div class="input-group mb-3">
+<select name="Image" id="id_Image" class="form-control">
+  <option  selected="All">ALL</option>
+
+  {% for data in Images %}
+  <option value={{data}}>{{data}}</option>
+  {% endfor %}
+
+</select>
+
+
+  <!--{{ Remove }}-->
+  <div class="input-group-prepend">
+    <button class="btn btn-dark" type="Submit">Search</button>
+  </div>
+</div>
+
+</form>
+
+
+<br/><br/>
+<table class="table table-hover">
+<tr><td colspan="5" align="center"><b>Host = {{ IP }} </b></td></tr>
+<tr>
+<th>Name</th>
+<th>Image</th>
+<th>Status</th>
+<th>Port</th>
+<th>Action</th>
+</tr>
+{% for data in containers %}
+<tr>
+    
+    <form method="POST">
+    {% csrf_token %} 
+    <!--enter the removed data here-->
+    <td value={{data.0}}>{{data.0}}</td>
+    <td name="Image">{{data.1}}</td>
+    <td name="Status">{{data.2}}</td>
+    <td name="Port">{{data.3}}</td>
+    <td width="20%" align="center">
+    {% if data.2 == 'exited' %}
+    <button class="btn btn-success" type="Submit" name="Start" value={{data.0}} onclick="javascript: form.action='/start-container/'" >Start</button>
+    <button class="btn btn-danger" type="Submit" name="Remove" value={{data.0}} onclick=" RemoveContainer(form,event); ">Remove</button>
+      {% elif data.2 == 'created'%}
+      <button class="btn btn-danger" type="Submit" name="Remove" value={{data.0}} onclick="javascript: form.action='/remove-container/'">Remove</button>
+
+    {% else %}
+
+    <button class="btn btn-warning" type="Submit" name="Stop" value={{data.0}} onclick="javascript: form.action='/stop-container/'">Stop</button></form>
+    {% endif %}
+
+    </td>
+   </form>
+</tr>
+{% endfor %}
+</table>
+<script>
+function RemoveContainer(form,e)
+{
+    console.log(form)
+  result =  confirm("Sure about this!");
+  if(result){
+    console.log(result)
+    javascript: form.action='/remove-container/' 
+  }
+  else{
+    e.preventDefault()
+  }
+}
+</script>
+
+
+{% endblock content %}
+
+
+
+

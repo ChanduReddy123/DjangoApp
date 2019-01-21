@@ -1,0 +1,66 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<br/><br/>
+{% if  alert == 0 %}
+  <script type="text/javascript">
+    alert("Image is not available")
+  </script>
+{% endif %}
+
+<form method="POST" action="/create-container/">
+{% csrf_token %}
+<div class="input-group mb-3">
+  <form class="needs-validation" novalidate>
+  <div class="form-row">
+    <div class="col-md-4 mb-3">
+      <label for="validationCustom01">Image</label>
+      <input type="text" name="Image" class="form-control" id="validationCustom01" placeholder="Image:tag" required>
+    </div>
+    <div class="col-md-2 mb-3">
+      <label for="validationCustom02">HostPort</label>
+      <input type="number" name="HostPort" class="form-control" id="HostPort" placeholder="8888">
+    </div>
+    <div class="col-md-2 mb-3">
+      <label for="validationCustom02">ContainerPort</label>
+      <input type="number" name="ContainerPort" class="form-control" id="ContainerPort" placeholder="8080">
+    </div>
+    <div class="col-md-2 mb-3">
+      <label for="validationCustomUsername">Detach</label>
+      <div class="input-group">
+      <select name="Detach" id="id_Detach" name="Detach" class="form-control">
+        <option value="True">Yes</option>
+        <option value="False">No</option>
+      </select>
+      </div>
+    </div>
+      <div class="form-row">
+    <div class="col-md-15 mb-3 ">
+      <label for="validationCustom03">Container Name</label>
+      <input type="text" class="form-control" id="Name" name="ContainerName" placeholder="Container Name" required>
+    </div>
+  </div>
+  </div>
+  <br/><br/>
+
+
+<div class="input-group">
+    <button class="btn btn-dark" type="Submit" id="create-btn">Create</button>
+  </div>
+</form>
+<script type="text/javascript">
+$(function(){
+  $("#create-btn").click(function(e){
+    result =  confirm("Sure about this!");
+    if(!result){
+      return false;
+    }
+  })
+})
+function testing()
+{
+  alert('image is not available')
+}
+</script>
+
+{% endblock content %}

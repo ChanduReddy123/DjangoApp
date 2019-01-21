@@ -1,0 +1,71 @@
+{% extends 'main.html' %}
+
+{% block content %}
+{% load static %}
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+  <br/><br/>
+<form method='POST' action='/Image-Form/'>
+{% csrf_token %}
+<div class="input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="">ImageName</span>
+  </div>
+  <!--{% if form == 0 %} 
+   Please enter the valid id
+  {% else %}-->
+  {{ form }}
+  <!--{% endif %}-->
+  <button type="submit"  class="btn btn-dark">Pull</button>
+</div>
+</form>
+
+<br/><br/>
+
+<table class="table table-hover">
+<tr>
+<th>Name</th>
+<th>Size</th>
+<th>Option</th>
+</tr>
+{% for data in Images %}
+<tr>
+    <form method="POST">
+    {% csrf_token %}
+     <td>{{data.0}}</td>
+     <td>{{data.1}}</td>
+     <td width="20%" align="center">
+     {% if data.0 in containers %}
+        <button class="btn btn-danger" data-toggle="tooltip" data-placement="right" title="image is beeing used" disabled>Remove</button>
+      {% else %}
+        <button class="btn btn-danger" type="Submit" name="Remove"  value={{data.0}} onclick="RemoveImage(form, event)  ">Remove</button>        
+      {% endif %}
+    
+     </td>
+    </form>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+<script>
+function RemoveImage(form, e)
+{
+  result =  confirm("Sure about this!");
+  debugger;
+  if(result){
+    console.log(result)
+    javascript: form.action='/Remove-Image/'
+  }else {
+    return e.preventDefault();
+  }
+}
+</script>
+{% endblock content %}
+
+
+
+
